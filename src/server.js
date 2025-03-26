@@ -328,6 +328,32 @@ app.post('/api/chat', ensureClientInitialized, (req, res) => {
   return handleChatRequest(req, res);
 });
 
+app.get('/api/token', ensureClientInitialized, async (req, res) => {
+  try {
+    const tempChat = new CopilotChat(lspClient);
+    const credentials = await tempChat._getCredentials();
+    
+    if (!credentials || !credentials.token) {
+      return res.status(401).json({
+        success: false,
+        error: 'No valid GitHub Copilot token found'
+      });
+    }
+
+    return res.json({
+      success: true,
+      token: credentials.token
+    });
+    
+  } catch (error) {
+    console.error('Error getting token:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Add enhanced error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled server error:', err);

@@ -102,6 +102,8 @@ export class CopilotChat {
           temperature: options.temperature || 0.5,
           max_tokens: options.maxTokens || 8192
         };
+        
+        console.log("url:", url);
 
         const requestOptions = {
           hostname: url.hostname,
@@ -114,6 +116,8 @@ export class CopilotChat {
             'Editor-Version': 'Neovim/0.10.3'
           }
         };
+
+        console.log("requestOptions:", requestOptions);
 
         // Use https or http depending on the protocol
         const requestModule = url.protocol === 'https:' ?
